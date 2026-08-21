@@ -1,8 +1,28 @@
+import os
+import io
+from threading import Thread
+from flask import Flask
 import telebot
 import qrcode
-import io
 
-# Bot tokeningiz
+# --- Flask Server (Render 24/7 uxlab qolmasligi uchun) ---
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot is running 24/7!"
+
+def run():
+    # Render beradigan PORT'ni avtomatik aniqlaydi
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
+
+# --- Telegram Bot ---
+# Bot tokeningiz (Agar o'zgargan bo'lsa, yangisini shu yerga yozasiz)
 TOKEN = '8990800228:AAGoRWttZ1VwyKR23Yzs7fIxpq20XyPRTX8'
 bot = telebot.TeleBot(TOKEN)
 
@@ -78,6 +98,8 @@ def handle_all(message):
     else:
         bot.reply_to(message, "❌ Iltimos, yaroqli matn yoki fayl yuboring.")
 
-# Botni uzluksiz ishlash rejimi
-print("Bot ishga tushdi...")
-bot.infinity_polling()
+# --- Asosiy ishga tushirish qismi ---
+if __name__ == "__main__":
+    print("Flask server va Bot ishga tushirilmoqda...")
+    keep_alive()      # Veb-serverni fonda yoqish
+    bot.infinity_polling()  # Botni ishlatish
