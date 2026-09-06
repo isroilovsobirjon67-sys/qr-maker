@@ -23,7 +23,7 @@ def keep_alive():
 
 # --- Telegram Bot ---
 # Bot tokeningiz (Agar o'zgargan bo'lsa, yangisini shu yerga yozasiz)
-TOKEN = '8990800228:AAGoRWttZ1VwyKR23Yzs7fIxpq20XyPRTX8'
+TOKEN = 'BOT_TOKEN'
 bot = telebot.TeleBot(TOKEN)
 
 # /start buyrug'i
